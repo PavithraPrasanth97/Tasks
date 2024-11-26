@@ -1,0 +1,127 @@
+/* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e0f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Styling for the Signup container (same as login container) */
+.signup-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 20px;
+}
+
+/* Heading style */
+.signup-container h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Form container */
+.signup-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Label styling */
+.signup-container label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Input fields (same style as login) */
+.signup-container input,
+.signup-container select {
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+/* Input focus effect */
+.signup-container input:focus,
+.signup-container select:focus {
+  border-color: #00796b;
+  box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
+}
+
+/* Button styling */
+.signup-container button {
+  padding: 15px;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-container button:hover {
+  background-color: #004d40;
+}
+
+/* Error message */
+.signup-container .error {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+}
+
+/* Link styles (same style as login) */
+.signup-container a {
+  font-size: 14px;
+  color: #00796b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.signup-container a:hover {
+  color: #004d40;
+  text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .signup-container {
+    width: 90%;
+    padding: 30px;
+  }
+
+  .signup-container h2 {
+    font-size: 24px;
+  }
+
+  .signup-container input,
+  .signup-container button {
+    font-size: 14px;
+  }
+}
