@@ -3,14 +3,26 @@ import Task from "../models/Task.js";
 import User from "../models/User.js";
 
 // Get tasks for a specific user
+// Controller for fetching tasks by userId
 export const getTasks = async (req, res) => {
   try {
-    const { userId } = req.params; // Correct way to extract userId from params
-    const tasks = await Task.find({ userId }); // Fetch tasks for the user
-    res.json(tasks);
+    const { userId } = req.params; // Destructure userId from params
+    console.log("Received userId in backend:", userId); // Log the received userId
+
+    // Fetch tasks associated with the userId
+    const tasks = await Task.find({ userId });
+
+    console.log("Fetched tasks:", tasks); // Log fetched tasks
+
+    // Check if tasks are found
+    if (tasks.length > 0) {
+      return res.json(tasks); // Return the tasks if found
+    } else {
+      return res.json([]); // Return an empty array if no tasks are found
+    }
   } catch (err) {
-    console.error("Error fetching tasks:", err);
-    res.status(500).send("Server Error");
+    console.error("Error fetching tasks:", err); // Log the error
+    return res.status(500).send("Server Error"); // Return a 500 status with error message
   }
 };
 

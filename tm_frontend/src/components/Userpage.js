@@ -1,49 +1,41 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirect
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 import "./Userpage.css";
 
 const Userpage = () => {
-  const { auth } = useContext(AuthContext); // Use context to get auth state
-  const [tasks, setTasks] = useState([]); // Task list
+  const { auth } = useContext(AuthContext);
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({
     taskName: "",
     date: "",
     status: "waiting",
     phase: "phase1",
   });
-  const [loading, setLoading] = useState(false); // Loading state
-  const [successMessage, setSuccessMessage] = useState(""); // Success message state
-  const navigate = useNavigate(); // Hook for navigation
+  const [loading, setLoading] = useState(false);
+  const [showTasks, setShowTasks] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
   const userId = auth.user?.id;
 
   useEffect(() => {
-    if (userId) {
-      axios
-        .get(`http://localhost:5000/api/tasks/${userId}`)
-        .then((response) => {
-          setTasks(response.data);
-        })
-        .catch((err) => {
-          console.error("Error fetching tasks:", err);
-        });
-    } else {
-      console.error("User ID is not available!");
-    }
-  }, [userId]);
-
-  // Create a new task for a user
-  const handleCreateNewTask = () => {
     const userId = auth.user?.id;
-    console.log("userid", userId);
+    if (userId) {
+      console.log("User ID:", userId);
+    }
+  }, [auth.user?.id]);
+
+  const handleCreateNewTask = () => {
     if (newTask.taskName && newTask.date && userId) {
       setLoading(true);
-      console.log("Sending Task Data:", newTask);
       axios
-        .post(`http://localhost:5000/api/tasks/${userId}`, newTask) // Ensure the URL is correct
+        .post(`http://localhost:5000/api/tasks/${userId}`, newTask, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((response) => {
-          console.log("Task saved successfully:", response.data);
           setTasks((prevTasks) => [...prevTasks, response.data]);
           setNewTask({
             taskName: "",
@@ -51,7 +43,6 @@ const Userpage = () => {
             status: "waiting",
             phase: "phase1",
           });
-          setLoading(false);
           setSuccessMessage("Task saved successfully!");
           setTimeout(() => {
             setSuccessMessage("");
@@ -59,6 +50,8 @@ const Userpage = () => {
         })
         .catch((err) => {
           console.error("Error creating new task:", err.response || err);
+        })
+        .finally(() => {
           setLoading(false);
         });
     } else {
@@ -66,21 +59,40 @@ const Userpage = () => {
     }
   };
 
-  // Handle task deletion
-  const handleDeleteTask = (taskId) => {
+  const handleShowTasks = () => {
+    if (!userId) {
+      console.error("User ID is missing!");
+      return;
+    }
+
+    setLoading(true);
     axios
-      .delete(`http://localhost:5000/api/tasks/${taskId}`) // Deleting task based on taskId
-      .then(() => {
-        setTasks(tasks.filter((task) => task._id !== taskId)); // Remove task from local state
+      .get(`http://localhost:5000/api/tasks/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
-      .catch((err) => {
-        console.error("Error deleting task:", err);
+      .then((response) => {
+        console.log("API Response:", response.data);
+        setTasks(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching tasks:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
+
+    setShowTasks(true);
   };
 
   const handleUpdateTask = (taskId, updatedTask) => {
     axios
-      .put(`http://localhost:5000/api/tasks/${taskId}`, updatedTask)
+      .put(`http://localhost:5000/api/tasks/${taskId}`, updatedTask, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then(() => {
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
@@ -89,27 +101,59 @@ const Userpage = () => {
         );
       })
       .catch((err) => {
-        console.error("Error updating task:", err.response || err);
+        console.error("Error updating task:", err);
       });
   };
+
+  const handleDeleteTask = (taskId) => {
+    axios
+      .delete(`http://localhost:5000/api/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then(() => {
+        setTasks(tasks.filter((task) => task._id !== taskId));
+      })
+      .catch((err) => {
+        console.error("Error deleting task:", err);
+      });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  // Handle closing the task table
+  // const handleCloseTasks = () => {
+  //   setShowTasks(false);
+  //   setTasks([]); // Optional: Clear the tasks when closed
+  // };
 
   return (
     <div className="user-page">
       <div className="navbar">
-        <button className="logout-btn" onClick={() => navigate("/")}>
+        <div className="navbar-left">
+          <div className="username-role">
+            <div className="username">{auth.user?.name}</div>
+            <div className="role">{auth.user?.role}</div>
+          </div>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
       </div>
 
-      <div className="task-table-container">
-        <h2>Task Details</h2>
+      <div className="content">
+        <button className="show-tasks-btn" onClick={handleShowTasks}>
+          Show Tasks
+        </button>
 
-        {/* Success Message */}
         {successMessage && (
           <div className="success-message">{successMessage}</div>
         )}
 
-        {/* Task Form */}
         <div className="task-form">
           <input
             type="text"
@@ -146,60 +190,84 @@ const Userpage = () => {
             onClick={handleCreateNewTask}
             disabled={loading}
           >
-            {loading ? "Saving..." : "Save"}
+            {loading ? "Saving..." : "Save Task"}
           </button>
         </div>
 
-        {/* Task Table */}
-        <table className="task-table">
-          <thead>
-            <tr>
-              <th>Task Name</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Phase</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task._id}>
-                <td>{task.taskName}</td>
-                <td>{task.date}</td>
-                <td>
-                  <select
-                    value={task.status}
-                    onChange={(e) =>
-                      handleUpdateTask(task._id, { status: e.target.value })
-                    }
-                  >
-                    <option value="waiting">Waiting</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </td>
-                <td>
-                  <select
-                    value={task.phase}
-                    onChange={(e) =>
-                      handleUpdateTask(task._id, { phase: e.target.value })
-                    }
-                  >
-                    <option value="phase1">Phase 1</option>
-                    <option value="phase2">Phase 2</option>
-                    <option value="phase3">Phase 3</option>
-                  </select>
-                </td>
-                <td>
-                  <button onClick={() => handleDeleteTask(task._id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* Task List with Close Button */}
+        {/* Task Table with Close Button */}
+        {showTasks && (
+          <div className="task-table-container">
+            <button
+              className="close-tasks-btn"
+              onClick={() => setShowTasks(false)}
+            >
+              Close Tasks
+            </button>
+            <table className="task-table">
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Phase</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.length > 0 ? (
+                  tasks.map((task) => (
+                    <tr key={task._id}>
+                      <td>{task.taskName}</td>
+                      <td>{task.date}</td>
+                      <td>
+                        <select
+                          value={task.status}
+                          onChange={(e) =>
+                            handleUpdateTask(task._id, {
+                              status: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="waiting">Waiting</option>
+                          <option value="in-progress">In Progress</option>
+                          <option value="completed">Completed</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select
+                          value={task.phase}
+                          onChange={(e) =>
+                            handleUpdateTask(task._id, {
+                              phase: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="phase1">Phase 1</option>
+                          <option value="phase2">Phase 2</option>
+                          <option value="phase3">Phase 3</option>
+                        </select>
+                      </td>
+                      <td>
+                        <button
+                          className="delete-task-btn"
+                          onClick={() => handleDeleteTask(task._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5">No tasks available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
