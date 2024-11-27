@@ -1,84 +1,100 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 
 const UserDetailPage = () => {
-  const location = useLocation(); // Get the state passed during navigation
-  const [user, setUser] = useState(null);
-  const [tasks, setTasks] = useState([]); // State to store user tasks
-  const navigate = useNavigate();
+  const { state } = useLocation();
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  const [userDetails, setUserDetails] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
-  // Fetch the user data from location state and the tasks from the API
   useEffect(() => {
-    if (location.state?.user) {
-      setUser(location.state.user); // Set the user data passed from Admin Page
+    if (state && state.user) {
+      const userId = state.user._id;
 
-      // Fetch tasks associated with the user
-      const fetchTasks = async () => {
+      const fetchUserDetailsAndTasks = async () => {
         try {
-          const token = localStorage.getItem("token"); // Retrieve token from localStorage
+          const token = localStorage.getItem("token");
           if (!token) {
             throw new Error("Token not found");
           }
 
           const response = await fetch(
-            `http://localhost:5000/api/tasks/tasks/user/${location.state.user._id}`,
+            `http://localhost:5000/api/tasks/user/${userId}`, // Check this URL structure
             {
               headers: {
-                Authorization: `Bearer ${token}`, // Send token for authentication
+                Authorization: `Bearer ${token}`,
               },
             }
           );
 
           if (!response.ok) {
-            throw new Error("Failed to fetch tasks");
+            throw new Error("Failed to fetch user details and tasks");
           }
 
           const data = await response.json();
-          setTasks(data); // Set tasks data
+          setUserDetails(data.user);
+          setTasks(data.tasks);
         } catch (error) {
-          console.error("Error fetching tasks:", error);
+          console.error("Error fetching user details and tasks:", error);
+        } finally {
+          setLoading(false); // Set loading to false when the request finishes
         }
       };
 
-      fetchTasks();
-    } else {
-      navigate("/admin"); // Redirect back to Admin Page if no user data is passed
+      fetchUserDetailsAndTasks();
     }
-  }, [location, navigate]);
+  }, [state]);
 
-  if (!user) {
-    return <div>Loading...</div>;
+  // Function to navigate back to the Admin page
+  const handleBackClick = () => {
+    navigate("/admin"); // Navigate back to the admin page
+  };
+  if (loading) {
+    return <div>Loading user details...</div>; // Show loading while fetching data
   }
 
   return (
     <div className="user-detail-page">
-      <h2>User Details</h2>
-      <div>
-        <strong>Name:</strong> {user.name}
-      </div>
-      <div>
-        <strong>Email:</strong> {user.email}
-      </div>
-      <div>
-        <strong>Role:</strong> {user.role}
-      </div>
+      <button onClick={handleBackClick}>Back to Admin Page</button>{" "}
+      {/* Back button */}
+      <h2>User Detail</h2>
+      {userDetails ? (
+        <div>
+          <h3>{userDetails.name}</h3>
+          <p>Email: {userDetails.email}</p>
 
-      {/* Display User Tasks */}
-      <h3>Assigned Tasks</h3>
-      {tasks.length > 0 ? (
-        <ul>
-          {tasks.map((task) => (
-            <li key={task._id}>
-              <strong>{task.title}</strong>: {task.description}
-            </li>
-          ))}
-        </ul>
+          <h4>Tasks</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Task Name</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Phase</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tasks.length > 0 ? (
+                tasks.map((task) => (
+                  <tr key={task._id}>
+                    <td>{task.taskName}</td>
+                    <td>{task.status}</td>
+                    <td>{new Date(task.date).toLocaleDateString()}</td>
+                    <td>{task.phase}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4">No tasks found for this user.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p>No tasks assigned to this user.</p>
+        <p>Loading user details...</p>
       )}
-
-      {/* Back Button to Admin Page */}
-      <button onClick={() => navigate("/admin")}>Back to Admin Page</button>
     </div>
   );
 };

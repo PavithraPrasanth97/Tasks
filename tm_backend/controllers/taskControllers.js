@@ -1,5 +1,6 @@
 // controllers/taskController.js
 import Task from "../models/Task.js";
+import User from "../models/User.js";
 
 // Get tasks for a specific user
 export const getTasks = async (req, res) => {
@@ -72,15 +73,40 @@ export const deleteTask = async (req, res) => {
   }
 };
 
-export const getUserTasks = async (req, res) => {
-  const userId = req.params.userId; // Get userId from the URL parameter
+// export const getTasksByUserId = async (req, res) => {
+//   const { userId } = req.params; // User ID from the route params
+
+//   try {
+//     // Fetch tasks associated with the userId
+//     const tasks = await Task.find({ userId });
+
+//     if (!tasks || tasks.length === 0) {
+//       return res.status(404).json({ message: "No tasks found for this user" });
+//     }
+
+//     res.status(200).json(tasks); // Return the tasks for the user
+//   } catch (error) {
+//     console.error("Error fetching tasks:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+// Function to get tasks for a specific user
+// Function to get user details and tasks for a specific user
+// Function to get user details and tasks for a specific user
+export const getUserDetailsAndTasks = async (req, res) => {
+  const { userId } = req.params; // Extract userId from params
 
   try {
-    const tasks = await Task.find({ userId }); // Fetch tasks associated with the userId
+    const user = await User.findById(userId); // Fetch user data
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    res.status(200).json(tasks); // Send tasks back to the client
+    const tasks = await Task.find({ userId }); // Get all tasks of the user
+    res.status(200).json({ user, tasks }); // Send both user data and tasks to the frontend
   } catch (error) {
-    console.error("Error fetching tasks:", error);
+    console.error("Error fetching user details and tasks:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

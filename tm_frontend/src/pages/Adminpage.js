@@ -1,11 +1,10 @@
-// Adminpage.js
-
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirect
+import { useNavigate } from "react-router-dom";
 import "./Adminpage.css";
 
 const Adminpage = () => {
   const [users, setUsers] = useState([]); // Initialize an empty array for users
+  const [userCount, setUserCount] = useState(0); // Track the number of users
   const navigate = useNavigate(); // Hook for navigation
 
   // Fetch users when the component mounts
@@ -26,13 +25,11 @@ const Adminpage = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch users");
         }
-
         const data = await response.json();
-
-        // Filter out the admin (if any) from the list of users
         const filteredUsers = data.filter((user) => user.role !== "admin");
 
-        setUsers(filteredUsers); // Update the state with the filtered list of users
+        setUsers(filteredUsers); // Update the state with the fetched data
+        setUserCount(filteredUsers.length); // Set user count
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -41,10 +38,10 @@ const Adminpage = () => {
     fetchUsers();
   }, []); // Runs once when the component mounts
 
-  // Handle user deletion (you may want to call a backend API for deleting)
+  // Handle user deletion
   const handleDeleteUser = async (id) => {
     try {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Token not found");
       }
@@ -54,19 +51,26 @@ const Adminpage = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`, // Send token for authentication
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to delete user");
-      }
+      const result = await response.json(); // Capture response
+      console.log("API Response:", result);
 
-      // Remove the deleted user from the state
-      setUsers(users.filter((user) => user._id !== id));
+      if (response.ok) {
+        // Remove deleted user from the UI
+        const updatedUsers = users.filter((user) => user._id !== id);
+        setUsers(updatedUsers);
+        alert("User deleted successfully.");
+      } else {
+        alert(result.message || "Failed to delete user.");
+      }
     } catch (error) {
       console.error("Error deleting user:", error);
+      alert("Failed to delete user.");
     }
   };
 
@@ -98,6 +102,7 @@ const Adminpage = () => {
 
       <div className="user-table-container">
         <h2>User Details</h2>
+        <p>Total Users: {userCount}</p> {/* Display the user count */}
         <table className="user-table">
           <thead>
             <tr>

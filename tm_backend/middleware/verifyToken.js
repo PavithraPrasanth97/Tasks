@@ -1,22 +1,17 @@
 import jwt from "jsonwebtoken";
 
+// In your authMiddleware.js
 export const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1] || req.cookies.jwt; // Get token from headers or cookies
-
+  const token = req.headers["authorization"]?.split(" ")[1]; // Extract token from Authorization header
   if (!token) {
-    console.log("No token provided");
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(403).json({ message: "Token is required" });
   }
 
-  // Verify the token
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.log("Invalid token:", err);
-      return res.status(403).json({ message: "Invalid token" });
+      return res.status(403).json({ message: "Invalid or expired token" });
     }
-
-    console.log("Decoded user:", decoded); // Log decoded user data
-    req.user = decoded;
-    next(); // Proceed to the next middleware or route handler
+    req.user = decoded; // Attach user info to the request
+    next();
   });
 };

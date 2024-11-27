@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Task from "../models/Task.js";
 
 // Signup Route Handler
 export const signup = async (req, res) => {
@@ -116,6 +117,23 @@ export const deleteUser = async (req, res) => {
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Fetch tasks by userId
+export const getTasksByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params; // Get the userId from the URL parameters
+    const tasks = await Task.find({ userId }); // Find tasks for the given userId
+
+    if (!tasks) {
+      return res.status(404).json({ message: "Tasks not found" });
+    }
+
+    res.status(200).json(tasks); // Return the tasks as a JSON response
+  } catch (error) {
+    console.error("Error fetching tasks by userId:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

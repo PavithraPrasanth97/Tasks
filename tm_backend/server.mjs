@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import taskrouter from "./routes/taskRoutes.js";
+import { verifyToken } from "./middleware/verifyToken.js";
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ mongoose
 
 // Routes
 server.use("/api/auth", authRoutes);
-server.use("/api/tasks", taskrouter);
+server.use("/api/tasks", verifyToken, taskrouter);
 
 // Start the server
 server.listen(process.env.PORT, () => {

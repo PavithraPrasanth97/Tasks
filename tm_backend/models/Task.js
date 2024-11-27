@@ -22,6 +22,7 @@ const taskSchema = new mongoose.Schema({
     type: String,
     default: "phase1",
   },
+  description: { type: String },
 });
 
 const Task = mongoose.model("Task", taskSchema);
