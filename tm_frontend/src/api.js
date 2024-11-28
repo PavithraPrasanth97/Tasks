@@ -6,6 +6,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json", // Default content type for requests
   },
+  timeout: 20000,
 });
 
 export default api;
