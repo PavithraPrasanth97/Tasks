@@ -41,6 +41,7 @@ const Login = () => {
         navigate("/user");
       }
     } catch (error) {
+      console.error("Login failed:", error);
       setError("Invalid credentials. Please try again.");
     }
   };
