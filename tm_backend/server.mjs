@@ -36,9 +36,10 @@ server.use(
       defaultSrc: ["'none'"], // Disallow all sources by default
       scriptSrc: [
         "'self'", // Allow scripts from the same origin
-        "https://vercel.live", // Allow scripts from Vercel (if using Vercel)
+        "https://vercel.live", // Allow scripts from Vercel (important for live feedback.js)
         "https://cdn.jsdelivr.net", // Allow scripts from a CDN (if needed)
         "https://www.gstatic.com", // Google Fonts for inline JavaScript
+        "https://*.vercel.live", // Allow other subdomains of Vercel
       ],
       styleSrc: [
         "'self'", // Allow styles from the same origin
