@@ -31,7 +31,7 @@ const Userpage = () => {
       setLoading(true);
       axios
         .post(
-          `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${userId}`,
+          `https://tasks-tmbackend.vercel.app/api/tasks/${userId}`,
           newTask,
           {
             headers: {
@@ -71,14 +71,11 @@ const Userpage = () => {
 
     setLoading(true);
     axios
-      .get(
-        `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      .get(`https://tasks-tmbackend.vercel.app/api/tasks/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((response) => {
         console.log("API Response:", response.data);
         setTasks(response.data);
@@ -96,7 +93,7 @@ const Userpage = () => {
   const handleUpdateTask = (taskId, updatedTask) => {
     axios
       .put(
-        `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${taskId}`,
+        `https://tasks-tmbackend.vercel.app/api/tasks/${taskId}`,
         updatedTask,
         {
           headers: {
@@ -118,14 +115,11 @@ const Userpage = () => {
 
   const handleDeleteTask = (taskId) => {
     axios
-      .delete(
-        `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${taskId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      .delete(`https://tasks-tmbackend.vercel.app/api/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then(() => {
         setTasks(tasks.filter((task) => task._id !== taskId));
       })

@@ -18,7 +18,7 @@ const Adminpage = () => {
         }
 
         const response = await fetch(
-          "https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/auth/users",
+          "https://tasks-tmbackend.vercel.app/api/auth/users",
           {
             headers: {
               Authorization: `Bearer ${token}`,
