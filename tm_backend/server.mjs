@@ -18,7 +18,7 @@ server.use(cookieParser());
 server.use(express.json());
 server.use(
   cors({
-    origin: process.env.FRONT_END_URL, // Replace with your frontend URL
+    origin: "https://tasks-tmfrontend.vercel.app/", // Replace with your frontend URL
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
   })
