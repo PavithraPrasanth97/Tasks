@@ -20,7 +20,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/auth/login",
+        "https://tasks-tmbackend.vercel.app/api/auth/login",
         { email, password }
       );
 
