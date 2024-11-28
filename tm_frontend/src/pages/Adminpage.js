@@ -17,11 +17,14 @@ const Adminpage = () => {
           throw new Error("Token not found");
         }
 
-        const response = await fetch("http://localhost:5000/api/auth/users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/auth/users",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch users");
@@ -56,10 +59,16 @@ const Adminpage = () => {
     <div className="admin-page">
       <div className="navbar">
         <div className="profile">
-          <img src="https://via.placeholder.com/40" alt="Admin" className="profile-img" />
+          <img
+            src="https://via.placeholder.com/40"
+            alt="Admin"
+            className="profile-img"
+          />
           <span className="username">Admin</span>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
 
       <div className="user-table-container">
@@ -77,13 +86,21 @@ const Adminpage = () => {
             {users.map((user) => (
               <tr key={user._id}>
                 <td>
-                  <button className="user-link" onClick={() => handleUserClick(user)}>
+                  <button
+                    className="user-link"
+                    onClick={() => handleUserClick(user)}
+                  >
                     {user.name}
                   </button>
                 </td>
                 <td>{user.email}</td>
                 <td>
-                  <button className="delete-btn" onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteUser(user._id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

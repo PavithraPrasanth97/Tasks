@@ -30,11 +30,15 @@ const Userpage = () => {
     if (newTask.taskName && newTask.date && userId) {
       setLoading(true);
       axios
-        .post(`http://localhost:5000/api/tasks/${userId}`, newTask, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
+        .post(
+          `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${userId}`,
+          newTask,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
         .then((response) => {
           setTasks((prevTasks) => [...prevTasks, response.data]);
           setNewTask({
@@ -67,11 +71,14 @@ const Userpage = () => {
 
     setLoading(true);
     axios
-      .get(`http://localhost:5000/api/tasks/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .get(
+        `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((response) => {
         console.log("API Response:", response.data);
         setTasks(response.data);
@@ -88,11 +95,15 @@ const Userpage = () => {
 
   const handleUpdateTask = (taskId, updatedTask) => {
     axios
-      .put(`http://localhost:5000/api/tasks/${taskId}`, updatedTask, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .put(
+        `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${taskId}`,
+        updatedTask,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then(() => {
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
@@ -107,11 +118,14 @@ const Userpage = () => {
 
   const handleDeleteTask = (taskId) => {
     axios
-      .delete(`http://localhost:5000/api/tasks/${taskId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .delete(
+        `https://tasks-tmbackend.vercel.app/?vercelToolbarCode=1vbOfzYIqJYLBag/api/tasks/${taskId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then(() => {
         setTasks(tasks.filter((task) => task._id !== taskId));
       })
