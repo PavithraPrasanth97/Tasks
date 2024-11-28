@@ -30,7 +30,7 @@ const Userpage = () => {
     if (newTask.taskName && newTask.date && userId) {
       setLoading(true);
       api
-        .post(`/tasks/${userId}`, newTask, {
+        .post(`/api/tasks/${userId}`, newTask, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -67,7 +67,7 @@ const Userpage = () => {
 
     setLoading(true);
     api
-      .get(`/tasks/${userId}`, {
+      .get(`/api/tasks/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -88,7 +88,7 @@ const Userpage = () => {
 
   const handleUpdateTask = (taskId, updatedTask) => {
     api
-      .put(`/tasks/${taskId}`, updatedTask, {
+      .put(`/api/tasks/${taskId}`, updatedTask, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -107,7 +107,7 @@ const Userpage = () => {
 
   const handleDeleteTask = (taskId) => {
     api
-      .delete(`/tasks/${taskId}`, {
+      .delete(`/api/tasks/${taskId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

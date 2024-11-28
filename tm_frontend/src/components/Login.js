@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/auth/login", { email, password });
+      const response = await api.post("/api/auth/login", { email, password });
 
       // If login is successful, store token and user data in AuthContext
       const userData = {

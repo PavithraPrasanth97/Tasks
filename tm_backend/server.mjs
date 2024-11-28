@@ -75,8 +75,8 @@ mongoose
   .catch((err) => console.log(err));
 
 // Routes
-server.use("/auth", authRoutes);
-server.use("/tasks", verifyToken, taskrouter);
+server.use("/api/auth", authRoutes);
+server.use("/api/tasks", verifyToken, taskrouter);
 
 // Start the server
 server.listen(process.env.PORT, () => {

@@ -24,7 +24,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await api.post("/auth/signup", {
+      const response = await api.post("/api/auth/signup", {
         name,
         email,
         password,
