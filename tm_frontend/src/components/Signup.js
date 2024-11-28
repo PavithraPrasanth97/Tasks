@@ -25,7 +25,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "https://tasks-tmbackend.vercel.app/api/auth/signup",
+        "https://tasks-tmbackend.vercel.app/auth/signup",
         {
           name,
           email,

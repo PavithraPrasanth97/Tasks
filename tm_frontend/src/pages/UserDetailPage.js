@@ -21,7 +21,7 @@ const UserDetailPage = () => {
           }
 
           const response = await fetch(
-            `https://tasks-tmbackend.vercel.app/api/tasks/user/${userId}`, // Check this URL structure
+            `https://tasks-tmbackend.vercel.app/tasks/user/${userId}`, // Check this URL structure
             {
               headers: {
                 Authorization: `Bearer ${token}`,
