@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 import { Link } from "react-router-dom";
@@ -19,10 +19,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "https://tasks-tmbackend.vercel.app/auth/login",
-        { email, password }
-      );
+      const response = await api.post("/auth/login", { email, password });
 
       // If login is successful, store token and user data in AuthContext
       const userData = {

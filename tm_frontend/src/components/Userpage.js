@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 import "./Userpage.css";
@@ -29,8 +29,8 @@ const Userpage = () => {
   const handleCreateNewTask = () => {
     if (newTask.taskName && newTask.date && userId) {
       setLoading(true);
-      axios
-        .post(`https://tasks-tmbackend.vercel.app/tasks/${userId}`, newTask, {
+      api
+        .post(`/tasks/${userId}`, newTask, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -66,8 +66,8 @@ const Userpage = () => {
     }
 
     setLoading(true);
-    axios
-      .get(`https://tasks-tmbackend.vercel.app/tasks/${userId}`, {
+    api
+      .get(`/tasks/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -87,8 +87,8 @@ const Userpage = () => {
   };
 
   const handleUpdateTask = (taskId, updatedTask) => {
-    axios
-      .put(`https://tasks-tmbackend.vercel.app/tasks/${taskId}`, updatedTask, {
+    api
+      .put(`/tasks/${taskId}`, updatedTask, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -106,8 +106,8 @@ const Userpage = () => {
   };
 
   const handleDeleteTask = (taskId) => {
-    axios
-      .delete(`https://tasks-tmbackend.vercel.app/tasks/${taskId}`, {
+    api
+      .delete(`/tasks/${taskId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

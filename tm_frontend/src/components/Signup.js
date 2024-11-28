@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
-import axios from "axios";
+import api from "../api";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -24,16 +24,13 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://tasks-tmbackend.vercel.app/auth/signup",
-        {
-          name,
-          email,
-          password,
-          confirmPassword,
-          role,
-        }
-      );
+      const response = await api.post("/auth/signup", {
+        name,
+        email,
+        password,
+        confirmPassword,
+        role,
+      });
 
       // If registration is successful, navigate to the login page
       if (response.status === 201) {
