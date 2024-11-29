@@ -1,34 +1,29 @@
-// controllers/taskController.js
 import Task from "../models/Task.js";
 import User from "../models/User.js";
 
-// Get tasks for a specific user
-// Controller for fetching tasks by userId
 export const getTasks = async (req, res) => {
   try {
-    const { userId } = req.params; // Destructure userId from params
-    console.log("Received userId in backend:", userId); // Log the received userId
+    const { userId } = req.params;
+    console.log("Received userId in backend:", userId);
 
-    // Fetch tasks associated with the userId
     const tasks = await Task.find({ userId });
 
     console.log("Fetched tasks:", tasks); // Log fetched tasks
 
-    // Check if tasks are found
     if (tasks.length > 0) {
-      return res.json(tasks); // Return the tasks if found
+      return res.json(tasks);
     } else {
-      return res.json([]); // Return an empty array if no tasks are found
+      return res.json([]);
     }
   } catch (err) {
-    console.error("Error fetching tasks:", err); // Log the error
-    return res.status(500).send("Server Error"); // Return a 500 status with error message
+    console.error("Error fetching tasks:", err);
+    return res.status(500).send("Server Error");
   }
 };
 
 // Create a new task for a user
 export const createTask = async (req, res) => {
-  const { userId } = req.params; // userId comes from URL params
+  const { userId } = req.params;
   const { taskName, date, status, phase } = req.body;
 
   if (!taskName || !date || !status || !phase) {
@@ -44,9 +39,8 @@ export const createTask = async (req, res) => {
   });
 
   try {
-    // Save the task in the database
     const savedTask = await newTask.save();
-    res.status(201).json(savedTask); // Send the saved task back as response
+    res.status(201).json(savedTask);
     console.log("newtaskdatas", savedTask);
   } catch (err) {
     console.error("Error saving task:", err);
@@ -54,7 +48,6 @@ export const createTask = async (req, res) => {
   }
 };
 
-// Update a specific task
 export const updateTask = async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -85,38 +78,17 @@ export const deleteTask = async (req, res) => {
   }
 };
 
-// export const getTasksByUserId = async (req, res) => {
-//   const { userId } = req.params; // User ID from the route params
-
-//   try {
-//     // Fetch tasks associated with the userId
-//     const tasks = await Task.find({ userId });
-
-//     if (!tasks || tasks.length === 0) {
-//       return res.status(404).json({ message: "No tasks found for this user" });
-//     }
-
-//     res.status(200).json(tasks); // Return the tasks for the user
-//   } catch (error) {
-//     console.error("Error fetching tasks:", error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
-
-// Function to get tasks for a specific user
-// Function to get user details and tasks for a specific user
-// Function to get user details and tasks for a specific user
 export const getUserDetailsAndTasks = async (req, res) => {
-  const { userId } = req.params; // Extract userId from params
+  const { userId } = req.params;
 
   try {
-    const user = await User.findById(userId); // Fetch user data
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const tasks = await Task.find({ userId }); // Get all tasks of the user
-    res.status(200).json({ user, tasks }); // Send both user data and tasks to the frontend
+    const tasks = await Task.find({ userId });
+    res.status(200).json({ user, tasks });
   } catch (error) {
     console.error("Error fetching user details and tasks:", error);
     res.status(500).json({ message: "Server error" });

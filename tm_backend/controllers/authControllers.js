@@ -3,12 +3,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Task from "../models/Task.js";
 
-// Signup Route Handler
+// Signup
 export const signup = async (req, res) => {
   try {
     const { name, email, password, confirmPassword, role } = req.body;
 
-    // Check if password and confirmPassword are the same
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
@@ -27,19 +26,18 @@ export const signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || "user", // Default to 'user' role if not provided
+      role: role || "user",
     });
 
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error(error); // Log the error for better debugging
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// Login Route Handler
+// Login
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -77,18 +75,14 @@ export const login = async (req, res) => {
   }
 };
 
-// controllers/authControllers.js
-
 // Fetch all users - admin only
 export const getAllUsers = async (req, res) => {
   try {
-    // Only allow admin users to access this route
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    // Fetch all users from the database
-    const users = await User.find({ role: { $ne: "admin" } }); // Excludes users with the 'admin' role
+    const users = await User.find({ role: { $ne: "admin" } });
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
@@ -97,17 +91,14 @@ export const getAllUsers = async (req, res) => {
 };
 
 // Delete a user by ID
-// Delete a user by ID
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Ensure that the user is an admin
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    // Find and delete the user
     const user = await User.findByIdAndDelete(userId);
 
     if (!user) {
@@ -116,7 +107,6 @@ export const deleteUser = async (req, res) => {
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
-    console.error("Error deleting user:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -124,14 +114,13 @@ export const deleteUser = async (req, res) => {
 // Fetch tasks by userId
 export const getTasksByUserId = async (req, res) => {
   try {
-    const { userId } = req.params; // Get the userId from the URL parameters
-    const tasks = await Task.find({ userId }); // Find tasks for the given userId
-
+    const { userId } = req.params;
+    const tasks = await Task.find({ userId });
     if (!tasks) {
       return res.status(404).json({ message: "Tasks not found" });
     }
 
-    res.status(200).json(tasks); // Return the tasks as a JSON response
+    res.status(200).json(tasks);
   } catch (error) {
     console.error("Error fetching tasks by userId:", error);
     res.status(500).json({ message: "Server error" });

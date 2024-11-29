@@ -4,12 +4,11 @@ import {
   createTask,
   updateTask,
   deleteTask,
-  getUserDetailsAndTasks, // Ensure this function is imported
-} from "../controllers/taskControllers.js"; // Correct import path
+  getUserDetailsAndTasks,
+} from "../controllers/taskControllers.js";
 
 const taskrouter = express.Router();
 
-// API routes for tasks
 taskrouter.get(`/:userId`, getTasks); // Get tasks for a specific user
 taskrouter.post(`/:userId`, createTask); // Create a new task for a user
 taskrouter.put(`/:taskId`, updateTask); // Update a specific task
