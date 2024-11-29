@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useLocation, useNavigate } from "react-router-dom";
 import "./UserDetailPage.css";
 
 const UserDetailPage = () => {
   const { state } = useLocation();
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (state && state.user) {
@@ -21,7 +21,7 @@ const UserDetailPage = () => {
           }
 
           const response = await fetch(
-            `https://tasks-tmbackend.vercel.app/api/tasks/user/${userId}`, // Check this URL structure
+            `https://tasks-tmbackend.vercel.app/api/tasks/user/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const UserDetailPage = () => {
         } catch (error) {
           console.error("Error fetching user details and tasks:", error);
         } finally {
-          setLoading(false); // Set loading to false when the request finishes
+          setLoading(false);
         }
       };
 
@@ -47,18 +47,16 @@ const UserDetailPage = () => {
     }
   }, [state]);
 
-  // Function to navigate back to the Admin page
   const handleBackClick = () => {
-    navigate("/admin"); // Navigate back to the admin page
+    navigate("/admin");
   };
   if (loading) {
-    return <div>Loading user details...</div>; // Show loading while fetching data
+    return <div>Loading user details...</div>;
   }
 
   return (
     <div className="user-detail-page">
       <button onClick={handleBackClick}>Back to Admin Page</button>{" "}
-      {/* Back button */}
       <h2>User Detail</h2>
       {userDetails ? (
         <div>

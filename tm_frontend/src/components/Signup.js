@@ -1,4 +1,3 @@
-// src/components/Signup.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
@@ -13,11 +12,9 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if password and confirmPassword are the same
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
@@ -34,7 +31,7 @@ const Signup = () => {
 
       // If registration is successful, navigate to the login page
       if (response.status === 201) {
-        navigate("/login"); // Redirect to login page
+        navigate("/login");
       }
     } catch (error) {
       // Handle errors from the API (e.g., user already exists)

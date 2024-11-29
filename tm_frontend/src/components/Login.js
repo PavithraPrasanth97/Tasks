@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api.js";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import "./Login.css";
 
@@ -12,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // Access login function from context
+  const { login } = useContext(AuthContext);
 
   // Handle login form submission
   const handleLogin = async (e) => {
@@ -31,7 +31,6 @@ const Login = () => {
       // Update AuthContext state with login details
       login(userData);
 
-      // Redirect based on user role
       if (response.data.user.role === "admin") {
         navigate("/admin");
       } else {

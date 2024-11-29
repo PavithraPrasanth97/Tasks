@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../api.js";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import { AuthContext } from "../context/AuthContext";
 import "./Userpage.css";
 
 const Userpage = () => {
@@ -125,12 +125,6 @@ const Userpage = () => {
     navigate("/login");
   };
 
-  // Handle closing the task table
-  // const handleCloseTasks = () => {
-  //   setShowTasks(false);
-  //   setTasks([]); // Optional: Clear the tasks when closed
-  // };
-
   return (
     <div className="user-page">
       <div className="navbar">
@@ -194,8 +188,6 @@ const Userpage = () => {
           </button>
         </div>
 
-        {/* Task List with Close Button */}
-        {/* Task Table with Close Button */}
         {showTasks && (
           <div className="task-table-container">
             <button

@@ -1,24 +1,21 @@
-/* General Page Setup */
 html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%; /* Full screen height */
+  height: 100%;
   font-family: "Arial", sans-serif;
 }
 
-/* Full-Width User Page */
 .user-page {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full screen height */
-  width: 100%; /* Full screen width */
-  background-color: #fafafa; /* Light background for the page */
+  height: 100%;
+  width: 100%;
+  background-color: #fafafa;
 }
 
-/* Navbar Styling */
 .navbar {
-  background-color: #2196f3; /* Simple blue background */
+  background-color: #2196f3;
   color: white;
   padding: 12px 20px;
   display: flex;
@@ -58,14 +55,12 @@ body {
   background-color: #e53935;
 }
 
-/* Main Content Area Styling */
 .content {
   flex-grow: 1;
   padding: 20px;
   background-color: white;
 }
 
-/* Task Form and Table Styles */
 .task-form,
 .task-table {
   width: 100%;
@@ -93,7 +88,6 @@ body {
   cursor: pointer;
 }
 
-/* Task Table Styles */
 .task-table {
   margin-top: 20px;
   border-collapse: collapse;
@@ -134,7 +128,6 @@ body {
   margin: 10px 0;
 }
 
-/* Responsive Layout Adjustments */
 @media (max-width: 1024px) {
   .navbar {
     padding: 10px 15px;

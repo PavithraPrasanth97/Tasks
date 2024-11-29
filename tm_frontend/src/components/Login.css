@@ -17,7 +17,6 @@ body {
   margin: 0;
 }
 
-/* Styling for the Login container */
 .login-container {
   width: 100%;
   max-width: 420px;
@@ -55,13 +54,11 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Input focus effect */
 .login-container input:focus {
   border-color: #00796b;
   box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
 }
 
-/* Button styling */
 .login-container button {
   padding: 15px;
   background-color: #00796b;
@@ -78,7 +75,6 @@ body {
   background-color: #004d40;
 }
 
-/* Error message */
 .login-container .error {
   color: #f44336;
   font-size: 14px;
@@ -86,7 +82,6 @@ body {
   margin-bottom: 15px;
 }
 
-/* Link styles */
 .login-container a {
   font-size: 14px;
   color: #00796b;
@@ -99,7 +94,6 @@ body {
   text-decoration: underline;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 480px) {
   .login-container {
     width: 90%;

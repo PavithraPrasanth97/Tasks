@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
 
-// Create a context for auth state
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -14,26 +13,26 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
-      setAuth(JSON.parse(userData)); // Load user data from localStorage (or cookies)
+      setAuth(JSON.parse(userData));
     }
   }, []);
 
-  // Login function to set auth state
+  // Login function
   const login = (userData) => {
     setAuth({
       isAuthenticated: true,
       role: userData.role,
       user: userData.user,
     });
-    localStorage.setItem("user", JSON.stringify(userData)); // Save user to localStorage
-    localStorage.setItem("token", userData.token); // Save token to localStorage
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", userData.token);
   };
 
-  // Logout function to clear auth state
+  // Logout function
   const logout = () => {
     setAuth({ isAuthenticated: false, role: null, user: null });
-    localStorage.removeItem("user"); // Remove user from localStorage
-    localStorage.removeItem("token"); // Remove token from localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (

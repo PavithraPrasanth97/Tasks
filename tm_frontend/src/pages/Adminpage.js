@@ -1,5 +1,3 @@
-// Adminpage.js
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Adminpage.css";
@@ -42,16 +40,13 @@ const Adminpage = () => {
     fetchUsers();
   }, []);
 
-  const handleDeleteUser = async (id) => {
-    // Handle delete user functionality
-  };
+  const handleDeleteUser = async (id) => {};
 
   const handleLogout = () => {
-    navigate("/"); // Redirect to the Signup page
+    navigate("/");
   };
 
   const handleUserClick = (user) => {
-    // Passing user data to UserDetailPage
     navigate("/user-detail", { state: { user } });
   };
 

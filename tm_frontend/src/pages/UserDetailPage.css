@@ -1,28 +1,25 @@
-/* General Setup */
 body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9; /* Light background for the entire page */
-  color: #333; /* Dark text for readability */
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-/* User Detail Page Layout */
 .user-detail-page {
   padding: 20px;
   max-width: 1000px;
-  margin: 30px auto; /* Center the content on the page */
+  margin: 30px auto;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Navbar Styling */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #00796b; /* Teal background */
+  background-color: #00796b;
   padding: 10px 20px;
   border-radius: 8px;
   color: white;
@@ -60,7 +57,6 @@ body {
   background-color: #d32f2f;
 }
 
-/* Main Content Layout */
 .main-content {
   display: flex;
   margin-top: 20px;
@@ -151,7 +147,6 @@ body {
   background-color: #d32f2f;
 }
 
-/* Form Inputs and Select Styling */
 input,
 select {
   padding: 10px;
@@ -169,13 +164,13 @@ input[type="date"] {
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
   .main-content {
-    flex-direction: column; /* Stack profile and table sections on smaller screens */
-    gap: 20px; /* Reduce gap between sections */
+    flex-direction: column;
+    gap: 20px;
   }
 
   .task-table-container,
   .profile-card {
-    width: 100%; /* Make sections full width */
+    width: 100%;
   }
 
   .logout-btn {

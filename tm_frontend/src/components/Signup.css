@@ -15,7 +15,6 @@ body {
   margin: 0;
 }
 
-/* Styling for the Signup container (same as login container) */
 .signup-container {
   width: 100%;
   max-width: 420px;
@@ -27,7 +26,6 @@ body {
   margin: 20px;
 }
 
-/* Heading style */
 .signup-container h2 {
   font-size: 28px;
   font-weight: bold;
@@ -35,14 +33,12 @@ body {
   margin-bottom: 30px;
 }
 
-/* Form container */
 .signup-container form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Label styling */
 .signup-container label {
   font-size: 14px;
   font-weight: 600;
@@ -52,7 +48,6 @@ body {
   display: block;
 }
 
-/* Input fields (same style as login) */
 .signup-container input,
 .signup-container select {
   padding: 15px;
@@ -64,14 +59,12 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Input focus effect */
 .signup-container input:focus,
 .signup-container select:focus {
   border-color: #00796b;
   box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
 }
 
-/* Button styling */
 .signup-container button {
   padding: 15px;
   background-color: #00796b;
@@ -88,7 +81,6 @@ body {
   background-color: #004d40;
 }
 
-/* Error message */
 .signup-container .error {
   color: #f44336;
   font-size: 14px;
@@ -96,7 +88,6 @@ body {
   margin-bottom: 15px;
 }
 
-/* Link styles (same style as login) */
 .signup-container a {
   font-size: 14px;
   color: #00796b;
@@ -110,6 +101,7 @@ body {
 }
 
 /* Mobile responsiveness */
+
 @media (max-width: 480px) {
   .signup-container {
     width: 90%;
